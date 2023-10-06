@@ -5,7 +5,8 @@
             margin: 40px
         }
     </style>
-    
+    <br>
+    <a href="{{ route('supershop.show', 2) }}" class="btn btn-outline-primary">Go To Index Page</a>
     <div class="card uper">
         <div class="card-header">
             Add Product
