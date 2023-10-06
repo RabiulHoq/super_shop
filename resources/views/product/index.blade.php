@@ -12,7 +12,6 @@
             </div>
         @endif
         <table class="table table-stripd">
-            <a href="{{ route('supershop.show', 1) }}" class="btn btn-outline-primary">Add Product</a>
             <thead>
                 <tr>
                     <td>ID</td>

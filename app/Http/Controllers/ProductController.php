@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -11,7 +12,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        $product= Product::all();
+        return view('product.index',compact('product'));
     }
 
     /**
@@ -19,7 +21,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        
+        return view('product.create');
     }
 
     /**
@@ -27,7 +29,18 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'product_name'=> 'required',
+            'product_description'=>'required|string',
+            'product_price' => 'required|integer'
+        ]);
+        $product=new Product([
+            'product_name'=> $request->get('product_name'),
+            'product_description'=> $request->get('product_description'),
+            'product_price'=> $request->get('product_price')
+        ]);
+        $product->save();
+        return redirect('/supershop')->with('success','Product has been added');
     }
 
     /**
@@ -35,7 +48,12 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        //
+        if ($id==1) {
+            return redirect('/supershop/create');
+        }
+        else{
+            return redirect('/supershop');
+        }
     }
 
     /**
@@ -43,7 +61,8 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $product =Product::find($id);
+        return view('product.edit',compact('product'));
     }
 
     /**
@@ -51,7 +70,17 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'product_name'=> 'required',
+            'product_description'=>'required|string',
+            'product_price' => 'required|integer'
+        ]);
+        $product = Product::find($id);
+        $product->product_name=$request->get('product_name');
+        $product->product_description=$request->get('product_description');
+        $product->product_price=$request->get('product_price');
+        $product->save();
+        return redirect('/supershop')->with('success','Product has been updated');
     }
 
     /**
@@ -59,6 +88,8 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $product = Product::find($id);
+        $product->delete();
+        return redirect('/supershop')->with('success','Product has been deleted successfully');
     }
 }
